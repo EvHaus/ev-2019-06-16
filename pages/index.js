@@ -1,18 +1,13 @@
 // @flow
-/* eslint-disable max-len */
 
-import React, {type Element, Fragment} from 'react';
-import {Helmet} from 'react-helmet';
+import React, {type Element} from 'react';
+import DocumentLister from '../components/DocumentLister';
+import ResponsiveLayout from '../components/ResponsiveLayout';
 
-export const Home = (): Element<typeof Fragment> => (
-	<Fragment>
-		<Helmet>
-			<title>Home</title>
-		</Helmet>
-		<div>
-			Test
-		</div>
-	</Fragment>
+export const Home = (): Element<typeof ResponsiveLayout> => (
+	<ResponsiveLayout>
+		<DocumentLister />
+	</ResponsiveLayout>
 );
 
 Home.displayName = 'Home';

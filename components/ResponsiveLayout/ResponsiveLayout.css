@@ -1,0 +1,15 @@
+.main {
+	background: var(--WHITE);
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	margin: 0 auto;
+	width: 800px;
+}
+
+/* Mobile */
+@media screen and (max-width: 960px) {
+	.main {
+		width: 100%;
+	}
+}

@@ -1,20 +1,18 @@
 // @flow
 
-import compression from 'compression';
+import apiDocuments from './api/documents';
 import greenlock from 'greenlock-express';
 import http from 'http';
 // flow-disable-next-line
 import http2 from 'http2';
 import Koa from 'koa';
-import koaConnect from 'koa-connect';
-import koaSend from 'koa-send';
+// import koaBody from 'koa-body';
 import next from 'next';
 import redirectHttps from 'redirect-https';
 import Router from 'koa-router';
 
 type CtxType = any;
 
-const ONE_YEAR = 1000 * 60 * 60 * 24 * 365;
 const PORT = parseInt(process.env.PORT, 10) || 3000;
 const __DEV__ = process.env.NODE_ENV !== 'production';
 
@@ -25,12 +23,12 @@ app.prepare().then((): any => {
 	const server = new Koa();
 	const router = new Router();
 
-	// Enable gzip compression
-	server.use(koaConnect(compression()));
+	// Handle JSON payloads in API endpoints
+	// const withPostBody = koaBody();
 
-	router.get('/robots.txt', (ctx: CtxType): any => koaSend(ctx, ctx.path, {
-		maxAge: ONE_YEAR,
-	}));
+	// API endpoints
+	// router.post('/api/contact', withPostBody, apiContact);
+	router.get('/api/documents', apiDocuments);
 
 	router.get('*', async (ctx: CtxType) => {
 		await handle(ctx.req, ctx.res);

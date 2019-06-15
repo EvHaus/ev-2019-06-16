@@ -1,16 +1,23 @@
 // @flow
 
-import React, {type Element, memo} from 'react';
+import React, {type Element} from 'react';
+import SearchInput from '../SearchInput';
 import styles from './Header.css';
+import UploadButton from '../UploadButton';
 
-type PropsType = {};
+export const Header = (): Element<'header'> => {
+	const _handleSearchChange = (value: string) => {
+		console.log('search change', value);
+	};
 
-export const Header = (): Element<'div'> => (
-	<div className={styles.main}>
-		Header
-	</div>
-);
+	return (
+		<header className={styles.main}>
+			<SearchInput onChange={_handleSearchChange} />
+			<UploadButton />
+		</header>
+	);
+};
 
 Header.displayName = 'Header';
 
-export default memo<PropsType>(Header);
+export default Header;

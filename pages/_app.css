@@ -2,17 +2,17 @@
 
 :global html,
 :global body {
+	background: var(--PURPLE-DARK);
 	height: 100%;
 }
 
 :global body {
-	--BLUE: #16ABE0;
-	--DARK-GRAY: #989899;
 	--GRAY: #C8C8C9;
-	--GREEN: #13D36A;
-	--ORANGE: #FF991B;
-	--RED: #E64B0E;
-	--YELLOW: #F0D70E;
+	--GRAY-DARK: #989899;
+	--PURPLE: #5741D9;
+	--PURPLE-DARK: #2B2261;
+	--WHITE: #FFF;
+	--WHITE-FADED: rgba(255, 255, 255, 0.7);
 	letter-spacing: 0.5px;
 	margin: 0;
 	padding: 0;

@@ -1,6 +1,6 @@
 // @flow
 
-import React, {type Element, memo, type Node} from 'react';
+import React, {type Element, type Node} from 'react';
 import classnames from 'classnames';
 import styles from './Button.css';
 
@@ -24,4 +24,4 @@ export const Button = ({
 
 Button.displayName = 'Button';
 
-export default memo<PropsType>(Button);
+export default Button;

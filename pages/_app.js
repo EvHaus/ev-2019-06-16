@@ -2,11 +2,10 @@
 
 import './_app.css';
 import App, {Container} from 'next/app';
-import {DEFAULT_META, SITE_NAME} from '../constants/seo';
 import React, {type Element} from 'react';
-import {Helmet} from 'react-helmet';
 
 export default class MyApp extends App {
+	// This is needed by next.js by default
 	static async getInitialProps ({Component, ctx, router}: any): {} {
 		let pageProps = {};
 
@@ -21,11 +20,6 @@ export default class MyApp extends App {
 		const {Component, pageProps} = this.props;
 		return (
 			<Container>
-				<Helmet
-					htmlAttributes={{lang: 'en'}}
-					meta={DEFAULT_META}
-					title={SITE_NAME}
-					titleTemplate={`%s | ${SITE_NAME}`} />
 				<Component {...pageProps} />
 			</Container>
 		);

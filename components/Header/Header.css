@@ -1,7 +1,9 @@
 .main {
-	border-bottom: 3px solid var(--YELLOW);
+	align-items: center;
+	background: var(--PURPLE);
 	display: flex;
 	flex: 0 0 96px;
 	height: 96px;
-	justify-content: center;
+	justify-content: space-between;
+	padding: 0 16px;
 }
