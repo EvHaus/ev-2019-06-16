@@ -1,0 +1,9 @@
+[include]
+
+components
+constants
+pages
+
+[options]
+
+suppress_comment= \\(.\\|\n\\)*\\flow-disable-next-line

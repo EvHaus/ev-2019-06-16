@@ -1,0 +1,14 @@
+{
+    "extends": "eslint-config-cumul8",
+    "overrides": [{
+        files: ["pages/*.js"],
+        rules: {
+            "filenames/match-exported": "off"
+        }
+    }],
+    "rules": {
+        "jsx-a11y/html-has-lang": "off",
+        "no-process-env": "off",
+        "promise/no-native": "off"
+    }
+}

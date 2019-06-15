@@ -1,0 +1,7 @@
+.main {
+	border-bottom: 3px solid var(--YELLOW);
+	display: flex;
+	flex: 0 0 96px;
+	height: 96px;
+	justify-content: center;
+}
