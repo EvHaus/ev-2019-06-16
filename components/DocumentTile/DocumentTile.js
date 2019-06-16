@@ -3,6 +3,7 @@
 import {GUTTER_SIZE, TILE_HEIGHT, TILE_WIDTH} from '../../constants';
 import React, {type Element} from 'react';
 import {type DocumentType} from '../../types';
+import numeral from 'numeral';
 import styles from './DocumentTile.css';
 
 type PropsType = {|
@@ -21,12 +22,14 @@ export const DocumentTile = ({
 		width: isFullWidth ? '100%' : TILE_WIDTH,
 	};
 
+	const formattedSize = numeral(document.size).format('0.0b');
+
 	return (
 		<div
 			className={styles.main}
 			style={style}>
 			<h3 className={styles.title}>{document.name}</h3>
-			<div className={styles.size}>{document.size}</div>
+			<div className={styles.size}>{formattedSize}</div>
 		</div>
 	);
 };

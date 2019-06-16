@@ -13,7 +13,7 @@ import {
 	type DocumentType,
 } from '../../types';
 import {GUTTER_SIZE, MOBILE_WIDTH, TILE_HEIGHT, TILE_WIDTH} from '../../constants';
-import React, {type Element, useMemo, useRef} from 'react';
+import React, {type Element, useCallback, useMemo, useRef} from 'react';
 import DocumentTile from '../DocumentTile';
 import styles from './DocumentsGrid.css';
 
@@ -52,13 +52,17 @@ export const DocumentsGrid = ({
 		return [_cache, _cellPositioner];
 	}, []);
 
-	// eslint-disable-next-line react/display-name
-	const _cellRenderer = ({
+	const _cellRenderer = useCallback(({
 		index,
 		key,
 		parent,
 		style,
-	}: CellRendererType): Element<typeof DocumentTile> => {
+	}: CellRendererType): Element<typeof DocumentTile> | null => {
+		const document = documents[index];
+
+		// Needed to handle filtering logic
+		if (!document) return null;
+
 		const isMobile = _isMobile();
 
 		// This extra div wrapper is needed here for <Masonry /> to be able to
@@ -73,12 +77,12 @@ export const DocumentsGrid = ({
 				parent={parent}>
 				<div style={innerStyle}>
 					<DocumentTile
-						document={documents[index]}
+						document={document}
 						isFullWidth={isMobile} />
 				</div>
 			</CellMeasurer>
 		);
-	};
+	}, [documents]);
 
 	const _handleResize = ({height, width}: AutoSizerType) => {
 		const columnCount = _getColumnCount(width);

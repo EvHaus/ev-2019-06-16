@@ -18,7 +18,6 @@ export const SearchInput = ({
 
 		// Since we can't use Redux or other state management, we'll just
 		// propagate up to the component above.
-		// TODO: Add throttling here
 		onChange(value);
 	};
 

@@ -17,3 +17,8 @@ export type DocumentType = {|
 	size: number,
 	url: string,
 |};
+
+export type DocumentsResponseType = {|
+	documents: Array<DocumentType>,
+	totalSize: number,
+|};

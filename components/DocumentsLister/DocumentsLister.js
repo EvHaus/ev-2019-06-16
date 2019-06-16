@@ -3,12 +3,19 @@
 import React, {type Element} from 'react';
 import DocumentsGrid from '../DocumentsGrid';
 import DocumentsListerEmpty from '../DocumentsListerEmpty';
+import numeral from 'numeral';
 import Spinner from '../Spinner';
 import styles from './DocumentsLister.css';
 import useDocuments from '../../hooks/useDocuments';
 
-export const DocumentsLister = (): Element<'section'> => {
-	const {documents, error, isLoading} = useDocuments();
+type PropsType = {
+	search?: ?string,
+};
+
+export const DocumentsLister = ({
+	search,
+}: PropsType): Element<'section'> => {
+	const {documents, error, isLoading, totalSize} = useDocuments(search);
 
 	let content;
 	if (error) {
@@ -27,7 +34,7 @@ export const DocumentsLister = (): Element<'section'> => {
 						{documents.length} documents
 					</h2>
 					<span className={styles.sizeTotal}>
-						Total size: 600kb
+						Total size: {numeral(totalSize).format('0.0b')}
 					</span>
 				</header>
 				<DocumentsGrid documents={documents} />
