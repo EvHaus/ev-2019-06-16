@@ -1,11 +1,16 @@
 // @flow
 
 import {type DocumentsResponseType, type DocumentType} from '../types';
-import DATABASE from './DATABASE';
+import fs from 'fs';
+import path from 'path';
 
 export default function (ctx: any) {
 	const filter = ctx.query.search;
 	let totalSize = 0;
+
+	// Mock a database read by parsing a local file
+	const dbPath = path.join(__dirname, 'DATABASE.json');
+	const DATABASE = JSON.parse(fs.readFileSync(dbPath).toString());
 
 	const documents = DATABASE.filter((item: DocumentType): boolean => {
 		const isIncluded = filter && filter.length ?

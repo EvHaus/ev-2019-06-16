@@ -1,0 +1,13 @@
+.main {
+	align-items: center;
+	color: var(--WHITE);
+	display: flex;
+	flex: 0 0 32px;
+	font-size: 11px;
+	justify-content: center;
+	padding: 8px 16px 9px;
+	text-align: center;
+}
+
+.error { background: var(--RED) }
+.success { background: var(--BLUE) }

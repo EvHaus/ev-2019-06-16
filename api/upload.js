@@ -6,8 +6,10 @@ import {
 	UPLOAD_DIR,
 	VALID_FILE_TYPES,
 } from '../constants';
+import DATABASE from './DATABASE';
 import fs from 'fs';
 import {IncomingForm} from 'formidable';
+import path from 'path';
 
 type FormPartType = {|
 	filename: string,
@@ -79,12 +81,19 @@ export default async function (ctx: any) {
 						// FIXME: Currently we assume that only 1 file is given.
 						const file = files[0] || {};
 
-						ctx.status = 200;
-						ctx.body = {
+						const body = {
 							name: file.name,
 							size: file.size,
 							url: file.path.replace(ROOT_DIR, ''),
 						};
+
+						// Push the info to our fake "database"
+						DATABASE.unshift(body);
+						const dbPath = path.join(__dirname, 'DATABASE.json');
+						fs.writeFileSync(dbPath, JSON.stringify(DATABASE, null, '\t'));
+
+						ctx.status = 200;
+						ctx.body = body;
 
 						resolve();
 					} catch (err) {

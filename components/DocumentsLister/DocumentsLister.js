@@ -3,23 +3,29 @@
 import React, {type Element} from 'react';
 import DocumentsGrid from '../DocumentsGrid';
 import DocumentsListerEmpty from '../DocumentsListerEmpty';
+import {type DocumentType} from '../../types';
 import numeral from 'numeral';
 import Spinner from '../Spinner';
 import styles from './DocumentsLister.css';
-import useDocuments from '../../hooks/useDocuments';
 
 type PropsType = {
+	documents: Array<DocumentType>,
+	error?: ?string,
+	isLoading: boolean,
 	search?: ?string,
+	totalSize: number,
 };
 
 export const DocumentsLister = ({
+	documents,
+	error,
+	isLoading,
 	search,
+	totalSize,
 }: PropsType): Element<'section'> => {
-	const {documents, error, isLoading, totalSize} = useDocuments(search);
-
 	let content;
 	if (error) {
-		content = error;
+		content = null;
 	} else if (isLoading) {
 		content = <Spinner />;
 	} else if (!documents || !documents.length) {

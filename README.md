@@ -41,9 +41,11 @@ The majority of security concerns with file uploads need to be addressed server-
 
 - [ ] `yarn` is used purely for convenience and speed of development. This extra dependency can be removed in favor of `npm` instead.
 - [ ] All file metadata is stored in a JSON file. A database should be used instead to manage uploads and serving of existing info.
+- [ ] When a new file is uploaded, a full refetch of the `GET /api/documents` is done to update the current lister. This was done due to time constraints. Ideally, the uploaded item would be pushed to local frontend state to avoid having to make an extra backend call.
+- [ ] There's a UX issue. If you have a search filter defined and then upload a file that doesn't match that filter - you won't see the newly added file. At the moment, this is done intentionally but it should be given some thought to improve the experience. Maybe more clear messaging?
 - [ ] The `<Masonry />` component in `<DocumentsGrid />` is a bit inefficient as a result of the server-side rendering. There are some performance improvements to be had here to clean up the logic which decides when cell measurements should be redone.
 - [ ] Neither the frontend nor the backend API scale well to very large data sets. To solve this, pagination should be implemented on both the frontend as well as the `/api/documents` endpoint.
-- [ ] Accessibility tags have not be setup correctly on all elements. For example, the `<DocumentTile />` component returns a clickable element but doesn't have the right `aria` attributes set.
+- [ ] Accessibility should be top-of-mind. For example, the `<DocumentTile />` component returns a clickable element but doesn't have the right `aria` attributes set.
 
 ## Libraries
 
