@@ -58,10 +58,10 @@ export const DocumentsGrid = ({
 		parent,
 		style,
 	}: CellRendererType): Element<typeof DocumentTile> | null => {
-		const document = documents[index];
+		const item = documents[index];
 
 		// Needed to handle filtering logic
-		if (!document) return null;
+		if (!item) return null;
 
 		const isMobile = _isMobile();
 
@@ -77,8 +77,8 @@ export const DocumentsGrid = ({
 				parent={parent}>
 				<div style={innerStyle}>
 					<DocumentTile
-						document={document}
-						isFullWidth={isMobile} />
+						isFullWidth={isMobile}
+						item={item} />
 				</div>
 			</CellMeasurer>
 		);

@@ -25,13 +25,14 @@ export const DocumentsLister = ({
 	} else if (!documents || !documents.length) {
 		content = <DocumentsListerEmpty />;
 	} else {
-		// TODO: i18n this for plural control
-		// TODO: Total size handling
+		// FUTURE: Use a library like `i18next` instead of this mess.
+		const documentsString = documents.length === 1 ? 'document' : 'documents';
+
 		content = (
 			<>
 				<header className={styles.header}>
 					<h2 className={styles.title}>
-						{documents.length} documents
+						{documents.length} {documentsString}
 					</h2>
 					<span className={styles.sizeTotal}>
 						Total size: {numeral(totalSize).format('0.0b')}

@@ -40,8 +40,10 @@ The majority of security concerns with file uploads need to be addressed server-
 ## Improvements
 
 - [ ] `yarn` is used purely for convenience and speed of development. This extra dependency can be removed in favor of `npm` instead.
-- [ ] All file metadata is stored in a static file. A database should be used instead.
+- [ ] All file metadata is stored in a JSON file. A database should be used instead to manage uploads and serving of existing info.
 - [ ] The `<Masonry />` component in `<DocumentsGrid />` is a bit inefficient as a result of the server-side rendering. There are some performance improvements to be had here to clean up the logic which decides when cell measurements should be redone.
+- [ ] Neither the frontend nor the backend API scale well to very large data sets. To solve this, pagination should be implemented on both the frontend as well as the `/api/documents` endpoint.
+- [ ] Accessibility tags have not be setup correctly on all elements. For example, the `<DocumentTile />` component returns a clickable element but doesn't have the right `aria` attributes set.
 
 ## Libraries
 
@@ -77,7 +79,7 @@ The majority of security concerns with file uploads need to be addressed server-
 
 ## API
 
-The API is written via `Node.js` and integrated into the server-side render front-end application. This is not a good long-term solution but used here due to time constraints. In the real world I would have built the API as a separate stand-alone service, and likely in a more robust language such as `Golang` or `Python`.
+The backend API is a REST API written via `Node.js` and integrated into the server-side web server for the front-end application. This is not a good long-term solution but used here due to time constraints. In the real world I would have built the API as a separate stand-alone service, and likely in a more robust language such as `Golang` or `Python`.
 
 ### `GET /api/documents`
 

@@ -27,7 +27,7 @@ export const SearchInput = ({
 				className={styles.input}
 				onChange={_handleChange}
 				placeholder='Search documents...'
-				type='text'
+				type='search'
 				value={value} />
 		</div>
 	);

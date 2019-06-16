@@ -11,6 +11,7 @@
 }
 
 :global body {
+	--BLACK: #000;
 	--GRAY: #DADCE0;
 	--GRAY-DARK: #A8A8A9;
 	--PINK: #DCA3C8;

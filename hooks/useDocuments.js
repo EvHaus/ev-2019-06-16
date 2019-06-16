@@ -31,7 +31,7 @@ const useDocuments = (
 
 		fetch(url, {timeout: 1000})
 			.then((res: any): Promise<DocumentsResponseType> => res.json())
-			.then((res: DocumentsResponseType): void => {
+			.then((res: DocumentsResponseType) => {
 				setIsLoading(false);
 				setError(null);
 				setDocuments(res.documents);
