@@ -8,16 +8,10 @@ export const upload = (file: File): Promise<DocumentType> => {
 	formData.append('file', file, file.name);
 
 	return fetch('/api/upload', {method: 'PUT', body: formData})
-		.then((response: Response): Promise<DocumentType> => response.json())
-		.catch((err: Error) => {
-			// Convert error message into something more user friendly
-			if (err.message.includes('maxFileSize exceeded')) {
-				throw new Error(
-					`The file you selected is too big. Maximum file size is 10MB.`
-				);
-			}
-
-			throw err;
+		.then((response: Response): Promise<any> => response.json())
+		.then((response: any): DocumentType => {
+			if (response.error) throw new Error(response.error);
+			return response;
 		});
 };
 

@@ -9,10 +9,10 @@ import {
 import fs from 'fs';
 import {IncomingForm} from 'formidable';
 
-type FormPartType = {
+type FormPartType = {|
 	filename: string,
 	mime: string,
-};
+|};
 
 export default async function (ctx: any) {
 	try {
@@ -45,10 +45,30 @@ export default async function (ctx: any) {
 					// TODO: In the future we can add progress bars via a socket
 				})
 				.on('error', (err: Error) => {
-					ctx.status = 415;
-					ctx.body = {
-						error: err.message,
-					};
+					// Determine error message and status code
+					if (err.message.includes('maxFileSize exceeded')) {
+						ctx.status = 413;
+						ctx.body = {
+							error: (
+								`The file you selected is too big. ` +
+								`Maximum file size is ${MAX_FILE_SIZE / 1024 / 1024}MB.`
+							),
+						};
+					} else if (err.message.includes('File type is not supported')) {
+						ctx.status = 415;
+						ctx.body = {
+							error: (
+								`The file you selected is not supported. Please ` +
+								`provide one of these types: ${VALID_FILE_TYPES.join(', ')}`
+							),
+						};
+					} else {
+						ctx.status = 500;
+						ctx.body = {
+							error: err.message,
+						};
+					}
+
 					reject(err);
 				})
 				.on('file', (field: string, file: any) => {

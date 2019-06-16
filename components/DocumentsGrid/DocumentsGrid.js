@@ -13,7 +13,7 @@ import {
 	type DocumentType,
 } from '../../types';
 import {GUTTER_SIZE, MOBILE_WIDTH, TILE_HEIGHT, TILE_WIDTH} from '../../constants';
-import React, {type Element, useRef} from 'react';
+import React, {type Element, useMemo, useRef} from 'react';
 import DocumentTile from '../DocumentTile';
 import styles from './DocumentsGrid.css';
 
@@ -34,18 +34,23 @@ export const DocumentsGrid = ({
 }: PropsType): Element<'div'> => {
 	const _masonryRef = useRef(null);
 
-	const cache = new CellMeasurerCache({
-		defaultHeight: TILE_HEIGHT,
-		defaultWidth: TILE_WIDTH,
-		fixedWidth: true,
-	});
+	// Setup cache for cell positions on mount
+	const [_cache, _cellPositioner] = useMemo((): [any, any] => {
+		const _cache = new CellMeasurerCache({
+			defaultHeight: TILE_HEIGHT,
+			defaultWidth: TILE_WIDTH,
+			fixedWidth: true,
+		});
 
-	const _cellPositioner = createMasonryCellPositioner({
-		cellMeasurerCache: cache,
-		columnCount: 1,
-		columnWidth: TILE_WIDTH,
-		spacer: GUTTER_SIZE,
-	});
+		const _cellPositioner = createMasonryCellPositioner({
+			cellMeasurerCache: _cache,
+			columnCount: 1,
+			columnWidth: TILE_WIDTH,
+			spacer: GUTTER_SIZE,
+		});
+
+		return [_cache, _cellPositioner];
+	}, []);
 
 	// eslint-disable-next-line react/display-name
 	const _cellRenderer = ({
@@ -62,7 +67,7 @@ export const DocumentsGrid = ({
 
 		return (
 			<CellMeasurer
-				cache={cache}
+				cache={_cache}
 				index={index}
 				key={key}
 				parent={parent}>
@@ -95,7 +100,7 @@ export const DocumentsGrid = ({
 				{({height, width}: any): Element<typeof Masonry> => (
 					<Masonry
 						cellCount={documents.length}
-						cellMeasurerCache={cache}
+						cellMeasurerCache={_cache}
 						cellPositioner={_cellPositioner}
 						cellRenderer={_cellRenderer}
 						className={styles.masonry}

@@ -7,7 +7,7 @@ import styles from './UploadButton.css';
 import {upload} from '../../actions/upload';
 
 type PropsType = {|
-	onUploadError: (err: Error) => any,
+	onUploadError: (err: string) => any,
 	onUploadSuccess: (doc: DocumentType) => any,
 |};
 
@@ -31,7 +31,7 @@ export const UploadButton = ({
 		// FIXME: Assumes only 1 file is given. Might be dangerous.
 		return upload(event.target.files[0])
 			.then(onUploadSuccess)
-			.catch(onUploadError);
+			.catch((err: Error) => onUploadError(err.message));
 	};
 
 	return (

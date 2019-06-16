@@ -8,7 +8,7 @@ import UploadButton from '../UploadButton';
 
 type PropsType = {|
 	onSearchRequest: (value: string) => any,
-	onUploadError: (err: Error) => any,
+	onUploadError: (err: string) => any,
 	onUploadSuccess: (doc: DocumentType) => any,
 |};
 
