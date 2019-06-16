@@ -2,34 +2,19 @@
 
 import React, {type Element, useRef} from 'react';
 import Button from '../Button';
+import {type DocumentType} from '../../types';
 import styles from './UploadButton.css';
+import {upload} from '../../actions/upload';
 
-const _handleUpload = (file: File): Promise<void> => {
-	return new Promise((resolve: () => any, reject: () => any) => {
-		const req = new XMLHttpRequest();
+type PropsType = {|
+	onUploadError: (err: Error) => any,
+	onUploadSuccess: (doc: DocumentType) => any,
+|};
 
-		const formData = new FormData();
-		formData.append('file', file, file.name);
-
-		req.open('POST', '/api/upload');
-		req.send(formData);
-
-		req.upload.addEventListener('progress', (event: ProgressEvent) => {
-			if (event.lengthComputable) {
-				const copy = {};
-				copy[file.name] = {
-					state: 'pending',
-					percentage: (event.loaded / event.total) * 100,
-				};
-
-				console.log(copy);
-				// this.setState({ uploadProgress: copy });
-			}
-		});
-	});
-};
-
-export const UploadButton = (): Element<typeof Button> => {
+export const UploadButton = ({
+	onUploadError,
+	onUploadSuccess,
+}: PropsType): Element<typeof Button> => {
 	const _fileInputRef = useRef();
 
 	// Simulate clicking on the hidden `<input type="file" />`
@@ -40,11 +25,13 @@ export const UploadButton = (): Element<typeof Button> => {
 	};
 
 	// Handle the file uploading itself
-	const _handleFileInputChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
-		// TODO: Handle invalid event and errors here
-		console.log('READY TO UPLOAD', event.target.files);
-
-		_handleUpload(event.target.files[0]);
+	const _handleFileInputChange = (
+		event: SyntheticInputEvent<HTMLInputElement>
+	): Promise<DocumentType> => {
+		// FIXME: Assumes only 1 file is given. Might be dangerous.
+		return upload(event.target.files[0])
+			.then(onUploadSuccess)
+			.catch(onUploadError);
 	};
 
 	return (

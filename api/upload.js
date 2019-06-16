@@ -1,8 +1,13 @@
 // @flow
 
-import {MAX_FILE_SIZE, VALID_FILE_TYPES} from '../constants';
+import {
+	MAX_FILE_SIZE,
+	ROOT_DIR,
+	UPLOAD_DIR,
+	VALID_FILE_TYPES,
+} from '../constants';
+import fs from 'fs';
 import {IncomingForm} from 'formidable';
-import path from 'path';
 
 type FormPartType = {
 	filename: string,
@@ -24,47 +29,48 @@ export default async function (ctx: any) {
 
 				if (!isValidType) {
 					form._error(new Error('File type is not supported'));
-				} else if (!part.filename) {
+				} else {
 					form.handlePart(part);
 				}
 			};
 
 			form.maxFileSize = MAX_FILE_SIZE;
-			form.uploadDir = path.join(__dirname, '..', 'static', 'uploads');
+			form.uploadDir = UPLOAD_DIR;
 
-			form.on('progress', (bytesReceived, bytesExpected) => {
-				console.log({bytesReceived, bytesExpected});
-			});
+			// Create upload directory if it doesn't exist yet
+			if (!fs.existsSync(UPLOAD_DIR)) fs.mkdirSync(UPLOAD_DIR);
 
-			form.on('error', (err: Error) => {
-				console.log('upload error', err);
-				ctx.status = 415;
-				ctx.body = {
-					error: err.message,
-				};
-				reject(err);
-			});
-
-			form.on('file', (field: string, file: File) => {
-				files.push(file);
-			});
-
-			form.on('end', () => {
-				try {
-					// Always assume we only received 1 file
-					const file = files[0];
-					console.log(file);
-
-					ctx.status = 200;
+			form
+				.on('progress', (bytesReceived: number, bytesExpected: number) => {
+					// TODO: In the future we can add progress bars via a socket
+				})
+				.on('error', (err: Error) => {
+					ctx.status = 415;
 					ctx.body = {
-						name: file.name,
+						error: err.message,
 					};
-
-					resolve();
-				} catch (err) {
 					reject(err);
-				}
-			});
+				})
+				.on('file', (field: string, file: any) => {
+					files.push(file);
+				})
+				.on('end', () => {
+					try {
+						// FIXME: Currently we assume that only 1 file is given.
+						const file = files[0] || {};
+
+						ctx.status = 200;
+						ctx.body = {
+							name: file.name,
+							size: file.size,
+							url: file.path.replace(ROOT_DIR, ''),
+						};
+
+						resolve();
+					} catch (err) {
+						reject(err);
+					}
+				});
 
 			form.parse(ctx.req);
 		});

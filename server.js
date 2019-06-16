@@ -29,7 +29,7 @@ app.prepare().then((): any => {
 
 	// API endpoints
 	router.get('/api/documents', apiDocuments);
-	router.post('/api/upload', withPostBody, apiUpload);
+	router.put('/api/upload', withPostBody, apiUpload);
 
 	router.get('*', async (ctx: CtxType) => {
 		await handle(ctx.req, ctx.res);

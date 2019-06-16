@@ -1,0 +1,11 @@
+.main {
+	align-items: center;
+	background: var(--RED);
+	color: var(--WHITE);
+	display: flex;
+	font-size: 11px;
+	height: 32px;
+	justify-content: center;
+	padding: 0 16px;
+	text-transform: uppercase;
+}

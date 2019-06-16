@@ -5,10 +5,10 @@ import React, {type Element} from 'react';
 import {type DocumentType} from '../../types';
 import styles from './DocumentTile.css';
 
-type PropsType = {
+type PropsType = {|
 	document: DocumentType,
 	isFullWidth: boolean,
-};
+|};
 
 export const DocumentTile = ({
 	document,

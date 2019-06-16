@@ -1,22 +1,29 @@
 // @flow
 
 import React, {type Element} from 'react';
+import {type DocumentType} from '../../types';
 import SearchInput from '../SearchInput';
 import styles from './Header.css';
 import UploadButton from '../UploadButton';
 
-export const Header = (): Element<'header'> => {
-	const _handleSearchChange = (value: string) => {
-		console.log('search change', value);
-	};
+type PropsType = {|
+	onSearchRequest: (value: string) => any,
+	onUploadError: (err: Error) => any,
+	onUploadSuccess: (doc: DocumentType) => any,
+|};
 
-	return (
-		<header className={styles.main}>
-			<SearchInput onChange={_handleSearchChange} />
-			<UploadButton />
-		</header>
-	);
-};
+export const Header = ({
+	onSearchRequest,
+	onUploadError,
+	onUploadSuccess,
+}: PropsType): Element<'header'> => (
+	<header className={styles.main}>
+		<SearchInput onChange={onSearchRequest} />
+		<UploadButton
+			onUploadError={onUploadError}
+			onUploadSuccess={onUploadSuccess} />
+	</header>
+);
 
 Header.displayName = 'Header';
 

@@ -3,9 +3,9 @@
 import React, {type Element, useState} from 'react';
 import styles from './SearchInput.css';
 
-type PropsType = {
+type PropsType = {|
 	onChange: (value: string) => any,
-};
+|};
 
 export const SearchInput = ({
 	onChange,

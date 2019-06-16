@@ -15,4 +15,5 @@ export type CellRendererType = {
 export type DocumentType = {
 	name: string,
 	size: number,
+	url: string,
 };

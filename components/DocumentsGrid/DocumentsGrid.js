@@ -17,9 +17,9 @@ import React, {type Element, useRef} from 'react';
 import DocumentTile from '../DocumentTile';
 import styles from './DocumentsGrid.css';
 
-type PropsType = {
+type PropsType = {|
 	documents: Array<DocumentType>,
-};
+|};
 
 // This is our breakpoint for mobile layouts.
 const _isMobile = (): boolean => window.innerWidth < MOBILE_WIDTH;
