@@ -1,12 +1,13 @@
 // @flow
 
 import apiDocuments from './api/documents';
+import apiUpload from './api/upload';
 import greenlock from 'greenlock-express';
 import http from 'http';
 // flow-disable-next-line
 import http2 from 'http2';
 import Koa from 'koa';
-// import koaBody from 'koa-body';
+import koaBody from 'koa-body';
 import next from 'next';
 import redirectHttps from 'redirect-https';
 import Router from 'koa-router';
@@ -24,11 +25,11 @@ app.prepare().then((): any => {
 	const router = new Router();
 
 	// Handle JSON payloads in API endpoints
-	// const withPostBody = koaBody();
+	const withPostBody = koaBody();
 
 	// API endpoints
-	// router.post('/api/contact', withPostBody, apiContact);
 	router.get('/api/documents', apiDocuments);
+	router.post('/api/upload', withPostBody, apiUpload);
 
 	router.get('*', async (ctx: CtxType) => {
 		await handle(ctx.req, ctx.res);

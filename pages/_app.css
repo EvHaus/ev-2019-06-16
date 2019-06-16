@@ -1,4 +1,8 @@
-/* stylelint-disable selector-max-combinators, selector-max-type */
+/* stylelint-disable selector-max-combinators, selector-max-type, selector-max-universal */
+
+:global * {
+	box-sizing: border-box;
+}
 
 :global html,
 :global body {
@@ -7,8 +11,9 @@
 }
 
 :global body {
-	--GRAY: #C8C8C9;
-	--GRAY-DARK: #989899;
+	--GRAY: #DADCE0;
+	--GRAY-DARK: #A8A8A9;
+	--PINK: #DCA3C8;
 	--PURPLE: #5741D9;
 	--PURPLE-DARK: #2B2261;
 	--WHITE: #FFF;
@@ -28,27 +33,4 @@
 	display: flex;
 	flex-direction: column;
 	height: 100%;
-}
-
-:global a {
-	text-decoration: none;
-}
-
-:global p {
-	font-size: 14px;
-	font-weight: 300;
-	line-height: 24px;
-	margin: 8px 0;
-}
-
-:global h2 {
-	font-size: 30px;
-	font-weight: 300;
-	margin-top: 32px;
-}
-
-:global h3 {
-	font-size: 24px;
-	font-weight: 300;
-	margin-top: 32px;
 }
