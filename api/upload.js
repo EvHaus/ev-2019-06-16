@@ -6,7 +6,6 @@ import {
 	UPLOAD_DIR,
 	VALID_FILE_TYPES,
 } from '../constants';
-import DATABASE from './DATABASE';
 import fs from 'fs';
 import {IncomingForm} from 'formidable';
 import path from 'path';
@@ -88,8 +87,9 @@ export default async function (ctx: any) {
 						};
 
 						// Push the info to our fake "database"
-						DATABASE.unshift(body);
 						const dbPath = path.join(__dirname, 'DATABASE.json');
+						const DATABASE = JSON.parse(fs.readFileSync(dbPath).toString());
+						DATABASE.unshift(body);
 						fs.writeFileSync(dbPath, JSON.stringify(DATABASE, null, '\t'));
 
 						ctx.status = 200;

@@ -14,6 +14,7 @@ type PropsType = {
 	isLoading: boolean,
 	search?: ?string,
 	totalSize: number,
+	uploadedFiles: Array<DocumentType>,
 };
 
 export const DocumentsLister = ({
@@ -22,29 +23,33 @@ export const DocumentsLister = ({
 	isLoading,
 	search,
 	totalSize,
+	uploadedFiles,
 }: PropsType): Element<'section'> => {
+	// Combine recentl uploaded files with what our API said is there
+	const allDocuments = uploadedFiles.concat(documents);
+
 	let content;
 	if (error) {
 		content = null;
 	} else if (isLoading) {
 		content = <Spinner />;
-	} else if (!documents || !documents.length) {
+	} else if (!allDocuments || !allDocuments.length) {
 		content = <DocumentsListerEmpty />;
 	} else {
 		// FUTURE: Use a library like `i18next` instead of this mess.
-		const documentsString = documents.length === 1 ? 'document' : 'documents';
+		const documentsString = allDocuments.length === 1 ? 'document' : 'documents';
 
 		content = (
 			<>
 				<header className={styles.header}>
 					<h2 className={styles.title}>
-						{documents.length} {documentsString}
+						{allDocuments.length} {documentsString}
 					</h2>
 					<span className={styles.sizeTotal}>
 						Total size: {numeral(totalSize).format('0.0b')}
 					</span>
 				</header>
-				<DocumentsGrid documents={documents} />
+				<DocumentsGrid documents={allDocuments} />
 			</>
 		);
 	}
