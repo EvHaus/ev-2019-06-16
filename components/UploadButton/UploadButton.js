@@ -41,6 +41,12 @@ export const UploadButton = ({
 			.then((file: DocumentType): DocumentType => {
 				onUploadSuccess(file);
 				setIsUploading(false);
+
+				// Clear the file input field so we can re-upload the same file
+				if (_fileInputRef && _fileInputRef.current) {
+					_fileInputRef.current.value = '';
+				}
+
 				return file;
 			})
 			.catch((err: Error): any => {

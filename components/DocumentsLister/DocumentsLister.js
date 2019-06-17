@@ -27,7 +27,6 @@ export const DocumentsLister = ({
 }: PropsType): Element<'section'> => {
 	// Combine recently uploaded files with what our API said is there
 	const allDocuments = uploadedFiles.concat(documents);
-	console.log({allDocuments});
 
 	let content;
 	if (error) {
