@@ -9,10 +9,11 @@
 		"eslint": "eslint-cumul8 .",
 		"flow": "flow",
 		"flow-typed:update": "rm -rf flow-typed && flow-typed install --ignoreDeps dev",
+		"jest": "jest",
 		"packagelint": "prettier-package-json --use-tabs --write ./package.json",
 		"start": "NODE_ENV=production node start.js",
 		"stylelint": "stylelint-cumul8 components/**/*.css pages/**/*.css",
-		"test": "yarn flow && yarn eslint && yarn stylelint && yarn packagelint"
+		"test": "yarn flow && yarn eslint && yarn stylelint && yarn packagelint && yarn jest"
 	},
 	"dependencies": {
 		"@zeit/next-css": "1.0.1",
@@ -34,10 +35,14 @@
 		"@babel/preset-flow": "7.0.0",
 		"@babel/register": "7.4.4",
 		"@globexdesigns/deploy": "0.5.2",
+		"enzyme": "3.10.0",
+		"enzyme-adapter-react-16": "1.14.0",
 		"eslint-config-cumul8": "8.0.50",
 		"flow-bin": "0.101.0",
 		"flow-typed": "2.5.2",
 		"husky": "2.4.1",
+		"identity-obj-proxy": "3.0.0",
+		"jest": "24.8.0",
 		"lint-staged": "8.2.1",
 		"prettier-package-json": "2.1.0",
 		"stylelint-config-cumul8": "2.1.57"

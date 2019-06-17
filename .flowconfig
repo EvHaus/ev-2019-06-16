@@ -1,8 +1,18 @@
+[ignore]
+
+<PROJECT_ROOT>/coverage/.*
+<PROJECT_ROOT>/**/.*\.test\.js
+
 [include]
 
+actions
+api
 components
 constants
+hooks
 pages
+types
+utils
 
 [options]
 

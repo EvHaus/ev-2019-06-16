@@ -13,6 +13,12 @@ Then run `yarn install --pure-lockfile` to install dependencies.
 
 Then run `yarn dev` to run a local development server.
 
+## Review Without Installation
+
+For your convenience this application is served at: ____ so it can be reviewed and tested without having to follow the installation steps above.
+
+This server is also running in production mode to validate
+
 ## Security
 
 The majority of security concerns with file uploads need to be addressed server-side. This project doesn't not address them. Below is a checklist of security concerns identified. The ones with a checkmark have been address, the ones without a checkmark have NOT been addressed.
@@ -21,6 +27,7 @@ The majority of security concerns with file uploads need to be addressed server-
 
 - [x] Search requests are debounced to avoid spamming the API and reduce race conditions.
 - [x] The names of uploaded files are shown but are processed through React to avoid XSS injections.
+- [x] All dependencies in `package.json` are pinned to specific versions and `yarn.lock` file is used to avoid unintended packages from being bundled in during re-installs.
 - [ ] Uploaded images are not actually shown or rendered in any way to avoid potential execution of malicious files.
 - [ ] Extremely large files are allowed to be sent to the backend and not restricted client-side causing potential server overload.
 - [ ] A large number of third-party dependencies are used that have the possibility to inject malicious code. Tools like `ESlint`, `flow` and `husky` all execute code and perform automated code changes. In this case it helped for rapid development, but in a situation where security is paramount, these tools should be more carefully reviewed as they could easily introduce a vulnerability.
@@ -30,6 +37,7 @@ The majority of security concerns with file uploads need to be addressed server-
 
 - [x] Only `image/jpeg` and `image/png` mime types are allowed to be uploaded.
 - [x] Only files less than 10mb in size are allowed to be uploaded.
+- [x] HTTPS is used (in production mode only) using a "Let's Encrypt" certificate.
 - [ ] In addition to mime type validation, file extension validation (including double extensions) should also be added.
 - [ ] Downloaded files are returned using their hashed name and lack of extension. A dedicated `/download` API should be created to be able to download a file via its ID and return the file with the original file name.
 - [ ] CSP rules should be defined on the endpoints to prevent external parties from using the API.
@@ -49,6 +57,7 @@ The majority of security concerns with file uploads need to be addressed server-
 - [ ] The `<Masonry />` component in `<DocumentsGrid />` is a bit inefficient as a result of the server-side rendering. There are some performance improvements to be had here to clean up the logic which decides when cell measurements should be redone.
 - [ ] Neither the frontend nor the backend API scale well to very large data sets. To solve this, pagination should be implemented on both the frontend as well as the `/api/documents` endpoint.
 - [ ] Accessibility should be top-of-mind. For example, the `<DocumentTile />` component returns a clickable element but doesn't have the right `aria` attributes set.
+- [ ] A lot of strings (ie. error messages) are duplicated and some inefficient string formatting is used. Moving to a localization library like `i18next` would clean this up.
 - [ ] The error and success messages come into view in a very jumpy way. It would be a better experience to animate those sliding in instead. However, that might cause conflicts with the grid layout below due to how it calculates the windowing height.
 
 ## Libraries
@@ -78,7 +87,11 @@ The majority of security concerns with file uploads need to be addressed server-
 - `eslint-config-cumul8`: My personal flavor of ESLint rules. Mostly here to keep me honest, keep the code quality high and help catch obvious bugs.
 - `flow-bin`: A static typing tool to help increase my code quality and help catch bugs.
 - `flow-typed`: Required by `flow`.
+- `enzyme`: Used to test React components via `jest`.
+- `enzyme-adapter-react-16`: Required by `enzyme`.
 - `husky`: A bit overkill for this use case, but a reminder to myself to run tests after every commit via Git hooks.
+- `identity-obj-proxy`: Required by `jest` in order to be used with CSS Modules.
+- `jest`: The requirements specified that unit tests must be included. Jest is the runner I'm most familiar with so I've used that for including tests.
 - `lint-staged`: See note above in `husky`. Used for running lint checks on every commit.
 - `prettier-package-json`: Keeps the `package.json` file clean.
 - `stylelint-config-cumul8`: Same as `ESLint` but for CSS code. Ensures I adhere to best practices and keep a consistent code style.
@@ -114,6 +127,11 @@ GET /api/documents/?search=Some
 }]
 ```
 
+*Errors:*
+
+- Code: 413 (The file you selected is too big)
+- Code: 415 (The file you selected is not supported.)
+
 ### `DELETE /api/document/:id`
 
 Deletes a specific document by id.
@@ -131,7 +149,10 @@ DELETE /api/documents/upload_123
 
 // Response
 {
-	success: true
+	id: "upload_123",
+	name: "your_file.jpg",
+	size: 5369132,
+	url: "/static/uploads/upload_123",
 }
 ```
 
@@ -139,12 +160,35 @@ DELETE /api/documents/upload_123
 
 Uploads a new document.
 
-TODO
+*Response:*
+
+- DocumentType
+- Code: 200
+
+*Example:*
+
+```
+// Request
+PUT /api/upload
+
+// Request POST body
+{
+	file: (binary)
+}
+
+// Response
+{
+	id: "upload_c69b44656d92935c9ef810cf22c5620c",
+	name: "your_file.jpg",
+	size: 5369132,
+	url: "/static/uploads/upload_c69b44656d92935c9ef810cf22c5620c",
+}
+```
 
 ## Other notes
 
-I found the majority of my time was spent building the necessary mocking and functionality of the backend API. Given the requirements of the test I felt this was necessary to demonstrate the most real-world application. I would have loved to spend more time improving the design, code quality and user experience of the front-end but simply ran out of time.
+I found the majority of my time was spent building the necessary mocking and functionality of the backend API. Given the requirements of the test I felt this was necessary to demonstrate the most real-world application. I would have loved to spend more time improving the visual design, code quality and user experience of the front-end but simply ran out of time.
 
-The limitation that restricts the ability to use a state management library like Redux resulted in very messy code and a lot of callbacks being passed from component to components. This resulted in very inefficient and duplicated code. In a real world scenario I would have relied very heavily on some state management library to avoid having to hoist all state in the root `/pages/index.js` component.
+The limitation that restricts the ability to use a state management library like Redux resulted in very messy code and a lot of callbacks being passed from component to components. I was able to work around this limitation by using the new `useReducer` hook API but I feel like this was slightly cheating on the initial requirements. Earlier commits of this project used `useState` callbacks local to the components, but that resulted in very buggy code. In a real world scenario I would have relied very heavily on some state management library to avoid having to hoist all state in the root `/pages/index.js` component via a single giant hook.
 
 Test coverage is very poor due to time constraints. Historically I always focus on delivering at least 90% code coverage on all code I write.
