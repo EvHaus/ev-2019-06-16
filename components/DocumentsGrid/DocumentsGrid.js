@@ -54,7 +54,6 @@ export const DocumentsGrid = ({
 
 	const _cellRenderer = useCallback(({
 		index,
-		key,
 		parent,
 		style,
 	}: CellRendererType): Element<typeof DocumentTile> | null => {
@@ -73,7 +72,7 @@ export const DocumentsGrid = ({
 			<CellMeasurer
 				cache={_cache}
 				index={index}
-				key={key}
+				key={item.id}
 				parent={parent}>
 				<div style={innerStyle}>
 					<DocumentTile

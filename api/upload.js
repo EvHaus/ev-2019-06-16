@@ -81,6 +81,7 @@ export default async function (ctx: any) {
 						const file = files[0] || {};
 
 						const body = {
+							id: file.path.replace(UPLOAD_DIR, '').substring(1),
 							name: file.name,
 							size: file.size,
 							url: file.path.replace(ROOT_DIR, ''),

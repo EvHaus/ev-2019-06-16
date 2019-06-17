@@ -33,8 +33,7 @@ const useUploadSuccess = (): ResponseType => {
 		setUploadSuccess(uploadedFile);
 
 		if (uploadedFile) {
-			uploadedFiles.push(uploadedFile);
-			setUploadedFiles(uploadedFiles);
+			setUploadedFiles([uploadedFile].concat(uploadedFiles));
 		}
 	};
 

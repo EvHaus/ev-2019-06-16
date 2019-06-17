@@ -1,6 +1,6 @@
 // @flow
 
-import React, {type Element} from 'react';
+import React, {type Element, memo} from 'react';
 import DocumentsGrid from '../DocumentsGrid';
 import DocumentsListerEmpty from '../DocumentsListerEmpty';
 import {type DocumentType} from '../../types';
@@ -25,8 +25,9 @@ export const DocumentsLister = ({
 	totalSize,
 	uploadedFiles,
 }: PropsType): Element<'section'> => {
-	// Combine recentl uploaded files with what our API said is there
+	// Combine recently uploaded files with what our API said is there
 	const allDocuments = uploadedFiles.concat(documents);
+	console.log({allDocuments});
 
 	let content;
 	if (error) {
@@ -63,4 +64,4 @@ export const DocumentsLister = ({
 
 DocumentsLister.displayName = 'DocumentsLister';
 
-export default DocumentsLister;
+export default memo<PropsType>(DocumentsLister);

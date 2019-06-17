@@ -1,30 +1,36 @@
 [
 	{
+		"id": "upload_01304806b81d74a4a688256d41650de1",
 		"name": "bird.jpeg",
 		"size": 81986,
 		"url": "/static/uploads/upload_01304806b81d74a4a688256d41650de1"
 	},
 	{
+		"id": "upload_3851368be1732eae7a7811c6c922470b",
 		"name": "dog.jpeg",
 		"size": 104298,
 		"url": "/static/uploads/upload_3851368be1732eae7a7811c6c922470b"
 	},
 	{
+		"id": "upload_88258ae144ab7697284431dc45763d2a",
 		"name": "duck.jpeg",
 		"size": 108704,
 		"url": "/static/uploads/upload_88258ae144ab7697284431dc45763d2a"
 	},
 	{
+		"id": "upload_e6f7b113f52e94263b40c6d58a87da6d",
 		"name": "giraffe.jpeg",
 		"size": 186824,
 		"url": "/static/uploads/upload_e6f7b113f52e94263b40c6d58a87da6d"
 	},
 	{
+		"id": "upload_c453c6091e4a1d38628f3273be5f6f37",
 		"name": "panda.jpeg",
 		"size": 94437,
 		"url": "/static/uploads/upload_c453c6091e4a1d38628f3273be5f6f37"
 	},
 	{
+		"id": "upload_f7fa6eb452f73d9e1a3a968fbc52d586",
 		"name": "wolf.jpeg",
 		"size": 112862,
 		"url": "/static/uploads/upload_f7fa6eb452f73d9e1a3a968fbc52d586"

@@ -46,6 +46,7 @@ The majority of security concerns with file uploads need to be addressed server-
 - [ ] The `<Masonry />` component in `<DocumentsGrid />` is a bit inefficient as a result of the server-side rendering. There are some performance improvements to be had here to clean up the logic which decides when cell measurements should be redone.
 - [ ] Neither the frontend nor the backend API scale well to very large data sets. To solve this, pagination should be implemented on both the frontend as well as the `/api/documents` endpoint.
 - [ ] Accessibility should be top-of-mind. For example, the `<DocumentTile />` component returns a clickable element but doesn't have the right `aria` attributes set.
+- [ ] The error and success messages come into view in a very jumpy way. It would be a better experience to animate those sliding in instead. However, that might cause conflicts with the grid layout below due to how it calculates the windowing height.
 
 ## Libraries
 

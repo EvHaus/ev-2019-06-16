@@ -13,6 +13,7 @@ export type CellRendererType = {|
 |};
 
 export type DocumentType = {|
+	id: string,
 	name: string,
 	size: number,
 	url: string,
