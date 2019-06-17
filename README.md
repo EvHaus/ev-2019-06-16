@@ -29,7 +29,7 @@ The application requires that you have `Node.js` and `yarn` installed.
 
 ## Security
 
-The majority of security concerns with file uploads need to be addressed server-side on the backend. This project doesn't not address a large number of them as per the requirements. Below is a checklist of security concerns identified. The ones with a checkmark have been address, the ones without a checkmark have *NOT* been addressed.
+The majority of security concerns with file uploads need to be addressed server-side on the backend. This project doesn't not address a large number of them as per the requirements. Below is a checklist of security concerns identified. The ones with a checkmark have been addressed, the ones without a checkmark have *NOT* been addressed.
 
 ### Frontend
 
