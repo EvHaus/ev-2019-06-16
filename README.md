@@ -1,5 +1,7 @@
 # ev-2019-06-16
 
+<div style="text-align:center"><img alt="Preview" src="preview.png" width="320" /></div>
+
 ## Installation
 
 > *NOTE*: Development was done on MacOS. It's likely these instructions will still work on Linux and Windows machines however this was not tested.
