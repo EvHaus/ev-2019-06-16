@@ -25,7 +25,7 @@ export const upload = (file: File): Promise<DocumentType> => {
 	if (!VALID_FILE_TYPES.includes(file.type)) return Promise.reject(
 		new Error(
 			`The file you selected is not supported. Please ` +
-			`provide one of these types: ${VALID_FILE_TYPES.join(', ')}`
+			`provide one of these types: ${VALID_FILE_TYPES.join(', ')}.`
 		)
 	);
 

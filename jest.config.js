@@ -4,7 +4,6 @@
 module.exports = {
 	collectCoverageFrom: [
 		'actions/**/*.js',
-		'api/**/*.js',
 		'components/**/*.js',
 		'constants/**/*.js',
 		'hooks/**/*.js',

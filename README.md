@@ -13,15 +13,14 @@ Then run `yarn install --pure-lockfile` to install dependencies.
 
 Then run `yarn dev` to run a local development server.
 
-## Review Without Installation
+### Scripts
 
-For your convenience this application is served at: ____ so it can be reviewed and tested without having to follow the installation steps above.
-
-This server is also running in production mode to validate
+- `yarn test`: Run all lint and tests
+- `yarn jest`: Run just the unit tests via Jest
 
 ## Security
 
-The majority of security concerns with file uploads need to be addressed server-side. This project doesn't not address them. Below is a checklist of security concerns identified. The ones with a checkmark have been address, the ones without a checkmark have NOT been addressed.
+The majority of security concerns with file uploads need to be addressed server-side. This project doesn't not address a large number of them. Below is a checklist of security concerns identified. The ones with a checkmark have been address, the ones without a checkmark have *NOT* been addressed.
 
 ### Frontend
 
@@ -83,7 +82,6 @@ The majority of security concerns with file uploads need to be addressed server-
 
 - `@babel/preset-flow`: Required by `flow`.
 - `@babel/register`: A bit overkill for this use case, but I prefer to use ES6 syntax and ES6 modules on the backend code and this allowed me to do this at a small performance cost.
-- `@globexdesigns/deploy`: A small utility I wrote in my spare time to automate the deployment of the application to a public server where the application can be previewed easily.
 - `eslint-config-cumul8`: My personal flavor of ESLint rules. Mostly here to keep me honest, keep the code quality high and help catch obvious bugs.
 - `flow-bin`: A static typing tool to help increase my code quality and help catch bugs.
 - `flow-typed`: Required by `flow`.
