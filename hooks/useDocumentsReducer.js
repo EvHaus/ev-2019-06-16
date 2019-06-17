@@ -102,7 +102,13 @@ const REDUCER = (state: StateType, action: ActionType): StateType => {
 				isFetching: false,
 			};
 		case 'SEARCH':
-			return {...state, search: payload};
+			return {
+				...state,
+				errorDeleting: null,
+				errorFetching: null,
+				errorUploading: null,
+				search: payload,
+			};
 		case 'UPLOAD':
 			return {
 				...state,
