@@ -1,6 +1,6 @@
 # ev-2019-06-16
 
-<div style="text-align:center"><img alt="Preview" src="preview.png" width="320" /></div>
+<p align="center"><img alt="Preview" src="preview.png" width="320" /></p>
 
 ## Installation
 
@@ -61,6 +61,7 @@ The majority of security concerns with file uploads need to be addressed server-
 - [ ] All files that are stored are exposed on via a public static directory, they should be sandboxed and served via a dedicated, CSP protected endpoint instead.
 - [ ] All files that are stored on disk should be encrypted.
 - [ ] All files that are uploaded should be run through antivirus software.
+- [ ] If in the future a real database is used, need to ensure the `search` input in the `GET /api/documents` endpoint doesn't allow for query injection when a real query is used.
 - [ ] Some endpoint errors are returned as they are captured by the Node.js engine, which in some cases can potentially reveal sensitive information such as file paths.
 - [ ] Logging and metric tracking should be added for all API endpoints so audits of usage can be performed, and we can identify which IP addresses are making requests. It would also be helpful with troubleshooting.
 
