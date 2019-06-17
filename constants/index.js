@@ -5,6 +5,9 @@ import path from 'path';
 // Space between the tiles in the documents grid
 export const GUTTER_SIZE = 16;
 
+// Maximum file name length allowed (in characters)
+export const MAX_FILE_NAME_LENGTH = 256;
+
 // Maximum upload file size (10 MB)
 export const MAX_FILE_SIZE = 10 * 1024 * 1024;
 

@@ -1,6 +1,7 @@
 // @flow
 
 import {
+	MAX_FILE_NAME_LENGTH,
 	MAX_FILE_SIZE,
 	ROOT_DIR,
 	UPLOAD_DIR,
@@ -24,11 +25,13 @@ export default async function (ctx: any) {
 			const form = new IncomingForm();
 			const files = [];
 
-			// Validate mime type of file to reject types we don't support.
+			// Run some validations on the given file.
 			form.onPart = function (part: FormPartType) {
 				const isValidType = VALID_FILE_TYPES.includes(part.mime);
 
-				if (!isValidType) {
+				if (part.filename.length > MAX_FILE_NAME_LENGTH) {
+					form._error(new Error('File name is too long'));
+				} else if (!isValidType) {
 					form._error(new Error('File type is not supported'));
 				} else {
 					form.handlePart(part);
@@ -47,7 +50,15 @@ export default async function (ctx: any) {
 				})
 				.on('error', (err: Error) => {
 					// Determine error message and status code
-					if (err.message.includes('maxFileSize exceeded')) {
+					if (err.message.includes('File name is too long')) {
+						ctx.status = 413;
+						ctx.body = {
+							error: (
+								`The file you selected has a name that is too long. ` +
+								`Maximum file name is ${MAX_FILE_NAME_LENGTH} characters.`
+							),
+						};
+					} else if (err.message.includes('maxFileSize exceeded')) {
 						ctx.status = 413;
 						ctx.body = {
 							error: (

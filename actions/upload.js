@@ -1,6 +1,7 @@
 // @flow
 
 import {
+	MAX_FILE_NAME_LENGTH,
 	MAX_FILE_SIZE,
 	VALID_FILE_TYPES,
 } from '../constants';
@@ -15,6 +16,13 @@ export const upload = (file: File): Promise<DocumentType> => {
 	// run some simple cleint-side checks to improve UX and reduce network
 	// load. These can be easily bypassed so they're online here for superficial
 	// checks.
+	if ((file.name || '').length > MAX_FILE_NAME_LENGTH) return Promise.reject(
+		new Error(
+			`The file you selected has a name that is too long. ` +
+			`Maximum file name is ${MAX_FILE_NAME_LENGTH} characters.`
+		)
+	);
+
 	if (file.size > MAX_FILE_SIZE) return Promise.reject(
 		new Error(
 			`The file you selected is too big. ` +
@@ -22,6 +30,8 @@ export const upload = (file: File): Promise<DocumentType> => {
 		)
 	);
 
+	// This validates both the MIME type as well as the extension. Protecting
+	// against some evasion techniques.
 	if (!VALID_FILE_TYPES.includes(file.type)) return Promise.reject(
 		new Error(
 			`The file you selected is not supported. Please ` +

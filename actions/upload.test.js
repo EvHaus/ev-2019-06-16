@@ -12,6 +12,26 @@ describe('upload', () => {
 		expect(typeof upload).toEqual('function');
 	});
 
+	it('should reject uploads if the file name is greater than 256 characters', async () => {
+		const file = {
+			name: (
+				`xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx` +
+				`xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx` +
+				`xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx` +
+				`xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx` +
+				`xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx` +
+				`xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`
+			),
+		};
+		try {
+			await upload(file);
+		} catch (err) {
+			expect(err.message).toEqual(
+				'The file you selected has a name that is too long. Maximum file name is 256 characters.'
+			);
+		}
+	});
+
 	it('should reject uploads if the file size is greater than 10MB', async () => {
 		const file = {size: 2000 * 1024 * 1024};
 		try {

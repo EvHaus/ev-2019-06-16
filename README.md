@@ -2,16 +2,23 @@
 
 ## Installation
 
+> *NOTE*: Development was done on MacOS. It's likely these instructions will still work on Linux and Windows machines however this was not tested.
+
+### Prerequisites
+
 The application requires that you have `Node.js` and `yarn` installed.
 
 - Install the latest version of `node` from [here](https://nodejs.org/en/)
 - Install the latest version of `yarn` from [here](https://yarnpkg.com/en/docs/install)
 
-Clone and checkout this repository on the `master` branch.
+### Running a local development server
 
-Then run `yarn install --pure-lockfile` to install dependencies.
+- Clone and checkout this repository on the `master` branch from `https://github.com/EvHaus/ev-2019-06-16`
+- Run `yarn install --pure-lockfile` to install dependencies
+- Run `yarn dev` to start a local development server
+- The application will start up on http://localhost:3000/
 
-Then run `yarn dev` to run a local development server.
+> *NOTE*: Testing was only done with the latest version of Google Chrome. Other browsers may not be fully supported.
 
 ### Scripts
 
@@ -20,12 +27,14 @@ Then run `yarn dev` to run a local development server.
 
 ## Security
 
-The majority of security concerns with file uploads need to be addressed server-side. This project doesn't not address a large number of them. Below is a checklist of security concerns identified. The ones with a checkmark have been address, the ones without a checkmark have *NOT* been addressed.
+The majority of security concerns with file uploads need to be addressed server-side on the backend. This project doesn't not address a large number of them as per the requirements. Below is a checklist of security concerns identified. The ones with a checkmark have been address, the ones without a checkmark have *NOT* been addressed.
 
 ### Frontend
 
 - [x] Search requests are debounced to avoid spamming the API and reduce race conditions.
 - [x] The names of uploaded files are shown but are processed through React to avoid XSS injections.
+- [x] Files are validates for valid MIME type and extension, as well as file size. However, since the API is open the public, these security checks are superficial and easily bypassed.
+- [x] File names are checked for maximum lengths to avoid crashing the backend. A maximum lenght of 256 characters was chosen arbitrarily.
 - [x] All dependencies in `package.json` are pinned to specific versions and `yarn.lock` file is used to avoid unintended packages from being bundled in during re-installs.
 - [ ] Uploaded images are not actually shown or rendered in any way to avoid potential execution of malicious files.
 - [ ] Extremely large files are allowed to be sent to the backend and not restricted client-side causing potential server overload.
@@ -37,27 +46,34 @@ The majority of security concerns with file uploads need to be addressed server-
 - [x] Only `image/jpeg` and `image/png` mime types are allowed to be uploaded.
 - [x] Only files less than 10mb in size are allowed to be uploaded.
 - [x] HTTPS is used (in production mode only) using a "Let's Encrypt" certificate.
-- [ ] In addition to mime type validation, file extension validation (including double extensions) should also be added.
+- [x] In addition to mime type validation, file extension validation (including double extensions) are also tested.
+- [x] Uploaded file names are renamed, given a unique hash name and have their extensions stripped.
+- [ ] Most of the common validation issues described in https://www.owasp.org/index.php/Unrestricted_File_Upload have been addressed, however, a full audit was not performed.
 - [ ] Downloaded files are returned using their hashed name and lack of extension. A dedicated `/download` API should be created to be able to download a file via its ID and return the file with the original file name.
 - [ ] CSP rules should be defined on the endpoints to prevent external parties from using the API.
+- [ ] CORS headers should be set on all endpoints.
 - [ ] Rate limiting and throttling should be applied to all endpoints to avoid DDOS attacks and general API misuse.
 - [ ] If the mime type is spoofed or tampered with, no additional security checks are done before the file is stored.
-- [ ] All files that are stored are exposed on via a public static directory, they should be sandboxed and served via a CSP protected endpoint instead.
+- [ ] If the file extension is spoofed or tampered with, no additional security checks are done before the file is stored.
+- [ ] All files that are stored on disk should be outside the web server's root directory.
+- [ ] All files that are stored are exposed on via a public static directory, they should be sandboxed and served via a dedicated, CSP protected endpoint instead.
 - [ ] All files that are stored on disk should be encrypted.
-- [ ] Errors are returned as they are in some cases potentially revealing sensitive information such as file paths.
-- [ ] Logging and metrics should be captured for all API uses so we can perform audits of usage, identify which IP addresses are making requests and have the necessary troubleshooting information.
+- [ ] All files that are uploaded should be run through antivirus software.
+- [ ] Some endpoint errors are returned as they are captured by the Node.js engine, which in some cases can potentially reveal sensitive information such as file paths.
+- [ ] Logging and metric tracking should be added for all API endpoints so audits of usage can be performed, and we can identify which IP addresses are making requests. It would also be helpful with troubleshooting.
 
 ## Improvements
 
-- [ ] `yarn` is used purely for convenience and speed of development. This extra dependency can be removed in favor of `npm` instead.
-- [ ] All file metadata is stored in a JSON file. A database should be used instead to manage uploads and serving of existing info.
-- [ ] When a new file is uploaded, a local cache of documents is updated in `pages/index.js`. This is very messy and not scalable. A better solution would be to use a global state management library like `redux`, but that wasn't allowed for this test.
-- [ ] There's a UX issue. If you have a search filter defined and then upload a file that doesn't match that filter - you will still see the newly added file. At the moment, this is done intentionally but it should be given some thought to improve the experience. Maybe not show the item, but make the success messaging more clear?s
+- [ ] `yarn` is used purely for convenience and speed of development. This extra dependency can be removed in favor of `npm` instead which would reduce an extra dependency and installation step.
+- [ ] All file metadata is stored in a simulated JSON `DATABASE.json` file. A real database should be used instead to manage uploads and serving of existing info.
+- [ ] When a new file is uploaded, a local cache of documents is updated in `hooks/useDocumentsReducer.js`. This is very messy and not scalable. A better solution would be to use a global state management library like `redux`.
+- [ ] There's a UX issue that needs discussion. If you have a search filter defined and then upload a file that doesn't match that filter - you will still see the newly added file. At the moment, this is done intentionally but it should be given some thought to improve the experience. Maybe not show the item, but make the success messaging more clear?
 - [ ] The `<Masonry />` component in `<DocumentsGrid />` is a bit inefficient as a result of the server-side rendering. There are some performance improvements to be had here to clean up the logic which decides when cell measurements should be redone.
-- [ ] Neither the frontend nor the backend API scale well to very large data sets. To solve this, pagination should be implemented on both the frontend as well as the `/api/documents` endpoint.
-- [ ] Accessibility should be top-of-mind. For example, the `<DocumentTile />` component returns a clickable element but doesn't have the right `aria` attributes set.
+- [ ] Neither the frontend nor the backend API scale well to very large data sets. To solve this, pagination should be implemented on both the frontend as well as the `/api/documents` endpoint. This would greatly change the request and response structure of the `GET /uploads` API endpoint.
+- [ ] Accessibility was not top-of-mind. For example, the `<Button />` component returns a clickable element but doesn't have the right `aria-label` attributes set.
 - [ ] A lot of strings (ie. error messages) are duplicated and some inefficient string formatting is used. Moving to a localization library like `i18next` would clean this up.
-- [ ] The error and success messages come into view in a very jumpy way. It would be a better experience to animate those sliding in instead. However, that might cause conflicts with the grid layout below due to how it calculates the windowing height.
+- [ ] The error and success messages come into view in a very jumpy way. It would be a better experience to animate those sliding in or render them outside the main containers to prevent the jumping altogether.
+- [ ] Development was done with the latest version of Google Chrome. Other browsers may not be fully supported and may have edge cases that need to be addressed.
 
 ## Libraries
 
@@ -98,6 +114,8 @@ The majority of security concerns with file uploads need to be addressed server-
 
 The backend API is a REST API written via `Node.js` and integrated into the server-side web server for the front-end application. This is not a good long-term solution but used here due to time constraints. In the real world I would have built the API as a separate stand-alone service, and likely in a more robust language such as `Golang` or `Python`.
 
+This documentation references some pre-defined types (eg. `DocumentType`). Details on these structures can be found in `/types/index.js`.
+
 ### `GET /api/documents`
 
 Returns a list of uploaded documents.
@@ -108,7 +126,7 @@ Returns a list of uploaded documents.
 
 *Response:*
 
-- Array<DocumentType>
+- `{documents: Array<DocumentType>, totalSize: number}`
 - Code: 200
 
 *Example:*
@@ -118,11 +136,15 @@ Returns a list of uploaded documents.
 GET /api/documents/?search=Some
 
 // Response
-[{
-	name: "Some file",
-	size: 20000,
-	url: "/static/uploads/123"
-}]
+{
+	documents: [{
+		id: "upload_c69b44656d92935c9ef810cf22c5620c",
+		name: "your_file.jpg",
+		size: 5369132,
+		url: "/static/uploads/upload_c69b44656d92935c9ef810cf22c5620c",
+	}],
+	totalSize: 5369132,
+}
 ```
 
 *Errors:*
@@ -158,9 +180,13 @@ DELETE /api/documents/upload_123
 
 Uploads a new document.
 
+*POST Body Argument:*
+
+- *file*: binary - The file you want to upload as a binary blob.
+
 *Response:*
 
-- DocumentType
+- `DocumentType`
 - Code: 200
 
 *Example:*
@@ -189,4 +215,4 @@ I found the majority of my time was spent building the necessary mocking and fun
 
 The limitation that restricts the ability to use a state management library like Redux resulted in very messy code and a lot of callbacks being passed from component to components. I was able to work around this limitation by using the new `useReducer` hook API but I feel like this was slightly cheating on the initial requirements. Earlier commits of this project used `useState` callbacks local to the components, but that resulted in very buggy code. In a real world scenario I would have relied very heavily on some state management library to avoid having to hoist all state in the root `/pages/index.js` component via a single giant hook.
 
-Test coverage is very poor due to time constraints. Historically I always focus on delivering at least 90% code coverage on all code I write.
+Test coverage is very poor due to time constraints. Historically I always focus on delivering at least 90% code coverage on all unit code I write. I would have liked to also add `cypress` to add some E2E tests which fully test the functionality as unit tests are not good enough for validating functionality.
