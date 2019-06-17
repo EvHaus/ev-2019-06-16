@@ -3,10 +3,19 @@
 import React, {type Element} from 'react';
 import styles from './DocumentsListerEmpty.css';
 
-export const DocumentsListerEmpty = (): Element<'div'> => {
+type PropsType = {|
+	search?: ?string,
+|};
+
+export const DocumentsListerEmpty = ({
+	search,
+}: PropsType): Element<'div'> => {
 	return (
 		<div className={styles.main} role='alert'>
-			No documents have been uploaded yet. Press the &quot;Upload&quot; button above to get started.
+			{search ?
+				`No documents match your search query.` :
+				`No documents have been uploaded yet. Press the &quot;Upload&quot; button above to get started.`
+			}
 		</div>
 	);
 };

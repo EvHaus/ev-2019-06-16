@@ -34,7 +34,7 @@ export const DocumentsLister = ({
 	} else if (isLoading) {
 		content = <Spinner />;
 	} else if (!allDocuments || !allDocuments.length) {
-		content = <DocumentsListerEmpty />;
+		content = <DocumentsListerEmpty search={search} />;
 	} else {
 		// FUTURE: Use a library like `i18next` instead of this mess.
 		const documentsString = allDocuments.length === 1 ? 'document' : 'documents';

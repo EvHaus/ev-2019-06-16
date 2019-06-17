@@ -19,9 +19,9 @@ The majority of security concerns with file uploads need to be addressed server-
 
 ### Frontend
 
-- [x] Requests to are paginated to handle large lists.
-- [x] Uploaded images are shown via the `<img src/>` tag and attribute to prevent execution of malicious files.
 - [x] Search requests are debounced to avoid spamming the API and reduce race conditions.
+- [x] The names of uploaded files are shown but are processed through React to avoid XSS injections.
+- [ ] Uploaded images are not actually shown or rendered in any way to avoid potential execution of malicious files.
 - [ ] Extremely large files are allowed to be sent to the backend and not restricted client-side causing potential server overload.
 - [ ] A large number of third-party dependencies are used that have the possibility to inject malicious code. Tools like `ESlint`, `flow` and `husky` all execute code and perform automated code changes. In this case it helped for rapid development, but in a situation where security is paramount, these tools should be more carefully reviewed as they could easily introduce a vulnerability.
 - [ ] Some small utility third-party dependencies are used to speed up development, but could introduce vulnerabilities if they are not carefully audited. For extra safety, it may be better to write custom solutions for these issues. For example, `classnames` could easily be rewritten as a custom function.
@@ -30,6 +30,8 @@ The majority of security concerns with file uploads need to be addressed server-
 
 - [x] Only `image/jpeg` and `image/png` mime types are allowed to be uploaded.
 - [x] Only files less than 10mb in size are allowed to be uploaded.
+- [ ] In addition to mime type validation, file extension validation (including double extensions) should also be added.
+- [ ] Downloaded files are returned using their hashed name and lack of extension. A dedicated `/download` API should be created to be able to download a file via its ID and return the file with the original file name.
 - [ ] CSP rules should be defined on the endpoints to prevent external parties from using the API.
 - [ ] Rate limiting and throttling should be applied to all endpoints to avoid DDOS attacks and general API misuse.
 - [ ] If the mime type is spoofed or tampered with, no additional security checks are done before the file is stored.
@@ -42,7 +44,7 @@ The majority of security concerns with file uploads need to be addressed server-
 - [ ] `yarn` is used purely for convenience and speed of development. This extra dependency can be removed in favor of `npm` instead.
 - [ ] All file metadata is stored in a JSON file. A database should be used instead to manage uploads and serving of existing info.
 - [ ] When a new file is uploaded, a local cache of documents is updated in `pages/index.js`. This is very messy and not scalable. A better solution would be to use a global state management library like `redux`, but that wasn't allowed for this test.
-- [ ] There's a UX issue. If you have a search filter defined and then upload a file that doesn't match that filter - you won't see the newly added file. At the moment, this is done intentionally but it should be given some thought to improve the experience. Maybe more clear messaging?
+- [ ] There's a UX issue. If you have a search filter defined and then upload a file that doesn't match that filter - you will still see the newly added file. At the moment, this is done intentionally but it should be given some thought to improve the experience. Maybe not show the item, but make the success messaging more clear?s
 - [ ] The `<Masonry />` component in `<DocumentsGrid />` is a bit inefficient as a result of the server-side rendering. There are some performance improvements to be had here to clean up the logic which decides when cell measurements should be redone.
 - [ ] Neither the frontend nor the backend API scale well to very large data sets. To solve this, pagination should be implemented on both the frontend as well as the `/api/documents` endpoint.
 - [ ] Accessibility should be top-of-mind. For example, the `<DocumentTile />` component returns a clickable element but doesn't have the right `aria` attributes set.

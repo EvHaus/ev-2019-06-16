@@ -32,6 +32,8 @@ const useUploadSuccess = (): ResponseType => {
 	const combinedSetUploadSuccess = (uploadedFile: ?DocumentType) => {
 		setUploadSuccess(uploadedFile);
 
+		// FUTURE: This is a bit weird. The file will be added to the view
+		// even if it doesn't match the current search filter
 		if (uploadedFile) {
 			setUploadedFiles([uploadedFile].concat(uploadedFiles));
 		}
