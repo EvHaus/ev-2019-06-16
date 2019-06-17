@@ -7,3 +7,11 @@
 	justify-content: space-between;
 	padding: 0 16px;
 }
+
+/* Mobile */
+@media screen and (max-width: 960px) {
+	.main {
+		flex-direction: column-reverse;
+		justify-content: center;
+	}
+}

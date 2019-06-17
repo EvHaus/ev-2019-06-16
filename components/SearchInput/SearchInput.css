@@ -18,3 +18,11 @@
 .input::placeholder {
 	color: var(--WHITE-FADED);
 }
+
+/* Mobile */
+@media screen and (max-width: 960px) {
+	.main {
+		min-width: auto;
+		width: 100%;
+	}
+}

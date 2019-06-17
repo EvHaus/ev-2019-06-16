@@ -1,5 +1,9 @@
 // @flow
 
+// I'm cheating a little bit. Even though I'm not using a state management
+// library, this giant hook is emulating a lot of what Redux would do. This
+// greatly reduces the complexity of using local state management.
+
 import {type DocumentsResponseType, type DocumentType} from '../types';
 import {useEffect, useReducer} from 'react';
 import debounce from '../utils/debounce';
@@ -21,6 +25,7 @@ type StateType = {|
 	isFetching: boolean,
 	isUploading: boolean,
 	search: string,
+	successDeleting: ?string,
 	successUploading: ?string,
 |};
 
@@ -28,6 +33,7 @@ type ResponseType = {|
 	onDelete: (doc: DocumentType) => any,
 	onDeleteError: (error: string) => any,
 	onDeleteSuccess: (doc: DocumentType) => any,
+	onDeleteSuccessDismiss: () => any,
 	onSearch: (search: string) => any,
 	onUpload: () => any,
 	onUploadError: (error: string) => any,
@@ -47,6 +53,7 @@ const INITIAL_STATE = {
 	isFetched: false,
 	isUploading: false,
 	search: '',
+	successDeleting: null,
 	successUploading: null,
 };
 
@@ -55,9 +62,18 @@ const REDUCER = (state: StateType, action: ActionType): StateType => {
 
 	switch (type) {
 		case 'DELETE':
-			return {...state, isDeleting: true};
+			return {
+				...state,
+				isDeleting: true,
+				successDeleting: null,
+			};
 		case 'DELETE_ERROR':
-			return {...state, errorDeleting: error, isDeleting: false};
+			return {
+				...state,
+				errorDeleting: error,
+				isDeleting: false,
+				successDeleting: null,
+			};
 		case 'DELETE_SUCCESS':
 			return {
 				...state,
@@ -68,7 +84,12 @@ const REDUCER = (state: StateType, action: ActionType): StateType => {
 					state.documentsSize - payload.size :
 					state.documentsSize,
 				isDeleting: false,
+				successDeleting: (
+					`Your file (${(payload || {}).name}) has been deleted successfully.`
+				),
 			};
+		case 'DELETE_SUCCESS_DISMISS':
+			return {...state, successDeleting: null};
 		case 'FETCH':
 			return {...state, isFetched: true, isFetching: true};
 		case 'FETCH_ERROR':
@@ -134,6 +155,10 @@ const useDocumentsReducer = (): ResponseType => {
 		dispatch({payload, type: 'DELETE_SUCCESS'});
 	};
 
+	const onDeleteSuccessDismiss = () => {
+		dispatch({type: 'DELETE_SUCCESS_DISMISS'});
+	};
+
 	const onFetch = () => {
 		dispatch({type: 'FETCH'});
 	};
@@ -185,6 +210,7 @@ const useDocumentsReducer = (): ResponseType => {
 		onDelete,
 		onDeleteError,
 		onDeleteSuccess,
+		onDeleteSuccessDismiss,
 		onSearch,
 		onUpload,
 		onUploadError,

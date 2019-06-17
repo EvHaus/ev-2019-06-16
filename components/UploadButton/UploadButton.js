@@ -52,7 +52,10 @@ export const UploadButton = ({
 	};
 
 	return (
-		<Button disabled={isUploading} onClick={_handleClick}>
+		<Button
+			className={styles.main}
+			disabled={isUploading}
+			onClick={_handleClick}>
 			{isUploading ? 'Uploading...' : 'Upload'}
 			<input
 				className={styles.fileInput}

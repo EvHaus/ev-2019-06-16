@@ -24,3 +24,12 @@
 	color: var(--GRAY-DARK);
 	font-size: 18px;
 }
+
+/* Mobile */
+@media screen and (max-width: 960px) {
+	.header {
+		align-items: flex-start;
+		flex-direction: column;
+		justify-content: center;
+	}
+}

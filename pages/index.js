@@ -12,6 +12,7 @@ export const Home = (): Element<typeof ResponsiveLayout> => {
 		onDelete,
 		onDeleteError,
 		onDeleteSuccess,
+		onDeleteSuccessDismiss,
 		onSearch,
 		onUpload,
 		onUploadError,
@@ -33,6 +34,12 @@ export const Home = (): Element<typeof ResponsiveLayout> => {
 			) : null}
 			{state.errorUploading ? (
 				<Message message={state.errorUploading} type='error' />
+			) : null}
+			{state.successDeleting ? (
+				<Message
+					message={state.successDeleting}
+					onDismiss={onDeleteSuccessDismiss}
+					type='success' />
 			) : null}
 			{state.successUploading ? (
 				<Message
