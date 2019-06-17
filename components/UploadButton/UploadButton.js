@@ -1,22 +1,25 @@
 // @flow
 
-import React, {type Element, useRef, useState} from 'react';
+import React, {type Element, useRef} from 'react';
 import Button from '../Button';
 import {type DocumentType} from '../../types';
 import styles from './UploadButton.css';
 import {upload} from '../../actions/upload';
 
 type PropsType = {|
-	onUploadError: (err: ?string) => any,
-	onUploadSuccess: (doc: ?DocumentType) => any,
+	isUploading: boolean,
+	onUpload: () => any,
+	onUploadError: (err: string) => any,
+	onUploadSuccess: (doc: DocumentType) => any,
 |};
 
 export const UploadButton = ({
+	isUploading,
+	onUpload,
 	onUploadError,
 	onUploadSuccess,
 }: PropsType): Element<typeof Button> => {
 	const _fileInputRef = useRef();
-	const [isUploading, setIsUploading] = useState(false);
 
 	// Simulate clicking on the hidden `<input type="file" />`
 	const _handleClick = () => {
@@ -29,18 +32,12 @@ export const UploadButton = ({
 	const _handleFileInputChange = (
 		event: SyntheticInputEvent<HTMLInputElement>
 	): Promise<DocumentType> => {
-		setIsUploading(true);
-
-		// Clear any success and error messages when a new file is being
-		// uploaded.
-		onUploadError(null);
-		onUploadSuccess(null);
+		onUpload();
 
 		// FIXME: Assumes only 1 file is given. Might be dangerous.
 		return upload(event.target.files[0])
 			.then((file: DocumentType): DocumentType => {
 				onUploadSuccess(file);
-				setIsUploading(false);
 
 				// Clear the file input field so we can re-upload the same file
 				if (_fileInputRef && _fileInputRef.current) {
@@ -51,7 +48,6 @@ export const UploadButton = ({
 			})
 			.catch((err: Error): any => {
 				onUploadError(err.message);
-				setIsUploading(false);
 			});
 	};
 

@@ -7,19 +7,25 @@ import styles from './Header.css';
 import UploadButton from '../UploadButton';
 
 type PropsType = {|
-	onSearchRequest: (value: string) => any,
-	onUploadError: (err: ?string) => any,
-	onUploadSuccess: (doc: ?DocumentType) => any,
+	isUploading: boolean,
+	onSearch: (search: string) => any,
+	onUpload: () => any,
+	onUploadError: (err: string) => any,
+	onUploadSuccess: (doc: DocumentType) => any,
 |};
 
 export const Header = ({
-	onSearchRequest,
+	isUploading,
+	onSearch,
+	onUpload,
 	onUploadError,
 	onUploadSuccess,
 }: PropsType): Element<'header'> => (
 	<header className={styles.main}>
-		<SearchInput onChange={onSearchRequest} />
+		<SearchInput onChange={onSearch} />
 		<UploadButton
+			isUploading={isUploading}
+			onUpload={onUpload}
 			onUploadError={onUploadError}
 			onUploadSuccess={onUploadSuccess} />
 	</header>

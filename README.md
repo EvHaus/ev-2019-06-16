@@ -37,6 +37,7 @@ The majority of security concerns with file uploads need to be addressed server-
 - [ ] If the mime type is spoofed or tampered with, no additional security checks are done before the file is stored.
 - [ ] All files that are stored are exposed on via a public static directory, they should be sandboxed and served via a CSP protected endpoint instead.
 - [ ] All files that are stored on disk should be encrypted.
+- [ ] Errors are returned as they are in some cases potentially revealing sensitive information such as file paths.
 - [ ] Logging and metrics should be captured for all API uses so we can perform audits of usage, identify which IP addresses are making requests and have the necessary troubleshooting information.
 
 ## Improvements
@@ -117,7 +118,22 @@ GET /api/documents/?search=Some
 
 Deletes a specific document by id.
 
-TODO
+*Response:*
+
+- DocumentType
+- Code: 200
+
+*Example:*
+
+```
+// Request
+DELETE /api/documents/upload_123
+
+// Response
+{
+	success: true
+}
+```
 
 ### `PUT /api/upload`
 

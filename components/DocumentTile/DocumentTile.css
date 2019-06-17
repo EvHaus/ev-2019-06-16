@@ -2,23 +2,43 @@
 	border: 1px solid var(--GRAY);
 	border-radius: 6px;
 	box-shadow: rgba(0, 0, 0, 0.2) 2px 2px 5px;
-	color: var(--BLACK);
 	display: inline-flex;
-	flex-direction: column;
+	justify-content: space-between;
 	padding: 16px;
-	text-decoration: none;
-	transition: background 250ms ease;
 }
 
-.main:focus,
-.main:hover {
-	background: var(--GRAY);
+.left,
+.right {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.left {
+	flex: 1 1 auto;
+	margin-right: 16px;
+	overflow: hidden;
+}
+
+.right {
+	flex: 0 0 auto;
 }
 
 .title {
+	color: var(--BLACK);
 	font-size: 18px;
 	font-weight: normal;
 	margin: 0;
+	overflow: hidden;
+	text-decoration: none;
+	text-overflow: ellipsis;
+	transition: color 250ms ease;
+	white-space: nowrap;
+}
+
+.title:focus,
+.title:hover {
+	color: var(--PURPLE);
 }
 
 .size {

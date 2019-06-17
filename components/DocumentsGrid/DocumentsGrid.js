@@ -19,6 +19,9 @@ import styles from './DocumentsGrid.css';
 
 type PropsType = {|
 	documents: Array<DocumentType>,
+	onDelete: (doc: DocumentType) => any,
+	onDeleteError: (err: string) => any,
+	onDeleteSuccess: (doc: DocumentType) => any,
 |};
 
 // This is our breakpoint for mobile layouts.
@@ -31,6 +34,9 @@ const _getColumnCount = (width: number): number => {
 
 export const DocumentsGrid = ({
 	documents,
+	onDelete,
+	onDeleteError,
+	onDeleteSuccess,
 }: PropsType): Element<'div'> => {
 	const _masonryRef = useRef(null);
 
@@ -77,7 +83,10 @@ export const DocumentsGrid = ({
 				<div style={innerStyle}>
 					<DocumentTile
 						isFullWidth={isMobile}
-						item={item} />
+						item={item}
+						onDelete={onDelete}
+						onDeleteError={onDeleteError}
+						onDeleteSuccess={onDeleteSuccess} />
 				</div>
 			</CellMeasurer>
 		);

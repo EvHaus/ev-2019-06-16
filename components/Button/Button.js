@@ -7,18 +7,20 @@ import styles from './Button.css';
 type PropsType = {|
 	children?: Node,
 	className?: ?string,
-	disabled: boolean,
+	color?: 'dark' | 'light',
+	disabled?: boolean,
 	onClick?: () => any,
 |};
 
 export const Button = ({
 	children,
 	className,
-	disabled,
+	color = 'light',
+	disabled = false,
 	onClick,
 }: PropsType): Element<'button'> => (
 	<button
-		className={classnames(styles.main, className)}
+		className={classnames(styles.main, styles[color], className)}
 		disabled={disabled}
 		onClick={onClick}>
 		{children}

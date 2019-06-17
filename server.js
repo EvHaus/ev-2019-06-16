@@ -1,5 +1,6 @@
 // @flow
 
+import apiDeleteDocument from './api/deleteDocument';
 import apiDocuments from './api/documents';
 import apiUpload from './api/upload';
 import greenlock from 'greenlock-express';
@@ -28,6 +29,7 @@ app.prepare().then((): any => {
 	const withPostBody = koaBody();
 
 	// API endpoints
+	router.delete('/api/document/:id', apiDeleteDocument);
 	router.get('/api/documents', apiDocuments);
 	router.put('/api/upload', withPostBody, apiUpload);
 

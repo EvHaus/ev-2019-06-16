@@ -10,46 +10,53 @@ import styles from './DocumentsLister.css';
 
 type PropsType = {
 	documents: Array<DocumentType>,
-	error?: ?string,
-	isLoading: boolean,
+	hasError: boolean,
+	isFetched: boolean,
+	isFetching: boolean,
+	onDelete: (doc: DocumentType) => any,
+	onDeleteError: (err: string) => any,
+	onDeleteSuccess: (doc: DocumentType) => any,
 	search?: ?string,
 	totalSize: number,
-	uploadedFiles: Array<DocumentType>,
 };
 
 export const DocumentsLister = ({
 	documents,
-	error,
-	isLoading,
+	hasError,
+	isFetched,
+	isFetching,
+	onDelete,
+	onDeleteError,
+	onDeleteSuccess,
 	search,
 	totalSize,
-	uploadedFiles,
 }: PropsType): Element<'section'> => {
-	// Combine recently uploaded files with what our API said is there
-	const allDocuments = uploadedFiles.concat(documents);
-
 	let content;
-	if (error) {
+	if (hasError) {
 		content = null;
-	} else if (isLoading) {
+	} else if (!isFetched || isFetching) {
 		content = <Spinner />;
-	} else if (!allDocuments || !allDocuments.length) {
+	} else if (!documents || !documents.length) {
 		content = <DocumentsListerEmpty search={search} />;
 	} else {
 		// FUTURE: Use a library like `i18next` instead of this mess.
-		const documentsString = allDocuments.length === 1 ? 'document' : 'documents';
+		const documentsString = documents.length === 1 ? 'document' : 'documents';
 
 		content = (
 			<>
 				<header className={styles.header}>
 					<h2 className={styles.title}>
-						{allDocuments.length} {documentsString}
+						{documents.length} {documentsString}
 					</h2>
 					<span className={styles.sizeTotal}>
 						Total size: {numeral(totalSize).format('0.0b')}
 					</span>
 				</header>
-				<DocumentsGrid documents={allDocuments} />
+				<DocumentsGrid
+					documents={documents}
+					onDelete={onDelete}
+					onDeleteError={onDeleteError}
+					onDeleteSuccess={onDeleteSuccess} />
 			</>
 		);
 	}
